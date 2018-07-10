@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".profileActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <!--top toolbar-->
+        <RelativeLayout
+            android:id="@+id/relLayout1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <include layout="@layout/layout_top_tabs" />
+
+        </RelativeLayout>
+
+        <!--middle section-->
+        <RelativeLayout
+            android:id="@+id/relLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/relLayout1">
+
+            <include layout="@layout/layout_center_view" />
+
+            <ImageView
+                android:id="@+id/ivPreview"
+                android:layout_width="345dp"
+                android:layout_height="171dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="80dp"
+                android:layout_marginRight="80dp"
+                android:layout_marginTop="20dp"
+                app:srcCompat="@android:color/background_dark" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="218dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="80dp"
+                android:layout_marginRight="80dp"
+                android:layout_marginTop="228dp"
+                android:text="USER NAME GOES HERE"
+              />
+
+        </RelativeLayout>
+
+
+        <!--buttom navigation-->
+
+        <include layout="@layout/layout_buttom_navigation_view" />
+
+
+    </RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>
