@@ -4,46 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".followActivity">
+    android:background="@color/white"
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    tools:context=".following_and_likes.followActivity">
 
 
-        <!--top toolbar-->
         <RelativeLayout
-            android:id="@+id/relLayout1"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
-            <include layout="@layout/layout_top_tabs" />
+                <include layout="@layout/layout_buttom_navigation_view"/>
 
         </RelativeLayout>
-
-        <!--middle section-->
-        <RelativeLayout
-            android:id="@+id/relLayout2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/relLayout1">
-
-            <include layout="@layout/layout_center_view" />
-
-            <android.support.v7.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="468dp"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginStart="0dp" />
-
-        </RelativeLayout>
-
-
-        <!--buttom navigation-->
-
-        <include layout="@layout/layout_buttom_navigation_view" />
-
-
-    </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>

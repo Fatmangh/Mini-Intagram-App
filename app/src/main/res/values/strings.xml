@@ -20,4 +20,9 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_camera_fragment">Hello camera fragment</string>
+    <string name="hello_message_fragment">Hello message fragment</string>
+    <string name="hello_home_fragment">Hello home fragment</string>
 </resources>

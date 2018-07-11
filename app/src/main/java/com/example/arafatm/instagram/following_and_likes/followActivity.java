@@ -1,4 +1,4 @@
-package com.example.arafatm.instagram;
+package com.example.arafatm.instagram.following_and_likes;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.arafatm.instagram.R;
 import com.example.arafatm.instagram.Utils.BottomNavigationViewHelper;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 

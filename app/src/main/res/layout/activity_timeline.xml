@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TimelineActivity">
+    tools:context=".Home.TimelineActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -26,50 +26,26 @@
             android:id="@+id/relLayout2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true">
+            android:layout_below="@id/relLayout1">
 
             <include layout="@layout/layout_center_view" />
 
-            <ImageView
-                android:id="@+id/ivPreview"
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rvPost"
                 android:layout_width="match_parent"
-                android:layout_height="223dp"
-                android:layout_alignParentStart="true"
+                android:layout_height="match_parent"
                 android:layout_alignParentTop="true"
-                android:layout_marginLeft="0dp"
-                android:layout_marginRight="0dp"
-                android:layout_marginTop="127dp"
-                app:srcCompat="@android:color/background_dark" />
-
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="64dp"
-                android:layout_height="53dp"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="5dp"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="64dp"
-                app:srcCompat="@android:color/background_dark" />
-
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="105dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginStart="84dp"
-                android:layout_marginTop="79dp"
-                android:text="@string/prompt_username"
-                 />
+                android:layout_centerHorizontal="true" />
 
         </RelativeLayout>
 
 
         <!--buttom navigation-->
 
-        <include layout="@layout/layout_buttom_navigation_view" />
+        <include
+            layout="@layout/layout_buttom_navigation_view"
+            android:layout_width="0dp"
+            android:layout_height="0dp" />
 
 
     </RelativeLayout>

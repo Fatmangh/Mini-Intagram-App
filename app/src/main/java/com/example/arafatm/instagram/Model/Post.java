@@ -6,6 +6,7 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+
 @ParseClassName("Post")
 public class Post extends ParseObject{
     private static final String KEY_DESCRIPTION = "description";
@@ -51,6 +52,12 @@ public class Post extends ParseObject{
             include("user");
             return this;
         }
+
+        public Query getPostsForUser(ParseUser user) {
+            whereEqualTo("user", user);
+            return this;
+        }
     }
+
 
 }

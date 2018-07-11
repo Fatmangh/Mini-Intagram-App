@@ -9,11 +9,11 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import com.example.arafatm.instagram.R;
-import com.example.arafatm.instagram.TimelineActivity;
-import com.example.arafatm.instagram.followActivity;
-import com.example.arafatm.instagram.profileActivity;
-import com.example.arafatm.instagram.searchActivity;
-import com.example.arafatm.instagram.shareActivity;
+import com.example.arafatm.instagram.Home.TimelineActivity;
+import com.example.arafatm.instagram.following_and_likes.followActivity;
+import com.example.arafatm.instagram.Profile.profileActivity;
+import com.example.arafatm.instagram.Search.searchActivity;
+import com.example.arafatm.instagram.Share.shareActivity;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 public class BottomNavigationViewHelper {
@@ -53,6 +53,10 @@ public class BottomNavigationViewHelper {
                 }
             }
         });
+    }
+
+    private static void goToSettingsPage(Context context) {
+
     }
 
     private static void goToLikesPage(Context context) {

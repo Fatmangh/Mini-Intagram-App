@@ -1,4 +1,4 @@
-package com.example.arafatm.instagram;
+package com.example.arafatm.instagram.Utils;
 
 import android.app.Application;
 

@@ -1,4 +1,4 @@
-package com.example.arafatm.instagram;
+package com.example.arafatm.instagram.Authentification;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.arafatm.instagram.Home.TimelineActivity;
+import com.example.arafatm.instagram.R;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;

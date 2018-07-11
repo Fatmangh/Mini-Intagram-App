@@ -11,14 +11,14 @@
         android:layout_height="wrap_content"
        >
 
-    <android.support.v7.widget.Toolbar
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/tabs"
-        app:menu="@menu/top_navigation_menu"
-        android:background="@drawable/white_grey_border_top">
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/white_grey_border_top"
+            app:menu="@menu/top_navigation_menu">
 
-    </android.support.v7.widget.Toolbar>
+        </android.support.design.widget.TabLayout>
 
     </android.support.design.widget.AppBarLayout>
 
