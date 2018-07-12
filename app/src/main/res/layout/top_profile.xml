@@ -97,21 +97,22 @@
             app:layout_constraintTop_toBottomOf="@+id/tvFollow" />
 
         <TextView
-            android:id="@+id/textView7"
+            android:id="@+id/settings"
             android:layout_width="120dp"
-            android:layout_height="16dp"
+            android:layout_height="19dp"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="Edit Profile"
+            android:background="@drawable/gray_border"
 
+            android:clickable="true"
+            android:text="Edit Profile"
+            android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="14sp"
-            android:textAlignment="center"
-            android:background="@drawable/gray_border"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.501"

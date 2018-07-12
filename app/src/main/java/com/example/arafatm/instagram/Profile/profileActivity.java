@@ -1,12 +1,14 @@
 package com.example.arafatm.instagram.Profile;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,7 +25,11 @@ public class profileActivity extends AppCompatActivity {
     private TextView posts;
     private TextView followers;
     private TextView following;
+    private TextView name;
+    private TextView settings;
+    private TextView mainName;
     private ImageView image;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,20 +37,40 @@ public class profileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
         setupBttomNavigationView();
 
+
         posts = (TextView) findViewById(R.id.tvPosts);
         followers = (TextView) findViewById(R.id.tvFollowers);
         following = (TextView) findViewById(R.id.tvFollow);
         image = (ImageView) findViewById(R.id.profile_image);
+        mainName = (TextView) findViewById(R.id.p_profileName);
+        name = (TextView) findViewById(R.id.display_name);
+        settings = (TextView) findViewById(R.id.settings);
+
+
 
         ParseUser.getCurrentUser().fetchInBackground();
         ParseUser currentUser = ParseUser.getCurrentUser();
+
 
         posts.setText(currentUser.getString("NumPosts"));
         String str = currentUser.getString("followers");
         followers.setText(str);
         following.setText(currentUser.getString("following"));
+        mainName.setText(currentUser.getUsername());
+        name.setText(currentUser.getString("name"));
+
+
+
 
         Glide.with(context).load(ParseUser.getCurrentUser().getParseFile("image").getUrl()).into(image);
+
+        settings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, settingsActivity.class);
+                startActivity(intent);
+            }
+        });
 
     }
 

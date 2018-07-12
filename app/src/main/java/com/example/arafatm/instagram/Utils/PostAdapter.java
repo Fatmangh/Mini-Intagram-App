@@ -21,6 +21,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     private List<Post> mPost;
     private Context context;
 
+
     //pass in the Posts array in the constructor
     public PostAdapter(List<Post> Posts) {
         mPost = Posts;
@@ -38,7 +39,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     }
 
 
-
     //bind the values based on the position of the element
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
@@ -49,6 +49,43 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         holder.tvDiscription.setText(Post.getDescription());
 
 
+        //GETTING LIKES AND COMMENTS TO WORK
+//        holder.numbLike.setText(ParseUser.getCurrentUser().getString("numLikes"));
+
+//        holder.numbLike.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                // increment number of likes
+//
+//                String numLikes = ParseUser.getCurrentUser().getString("numLikes");
+//                if (!numLikes.isEmpty()) {
+//                    int numLikesTemp = Integer.parseInt(numLikes) + 1;
+//                    ParseUser.getCurrentUser().put("numLikes", Integer.toString(numLikesTemp));
+//                }
+//            }
+//        });
+//        holder.comments.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                //Enable comments.
+//
+//                // increment number of comments
+//                String numComments = ParseUser.getCurrentUser().getString("NumComments");
+//                if (!numComments.isEmpty()) {
+//                    int numCommentsTemp = Integer.parseInt(numComments) + 1;
+//                    ParseUser.getCurrentUser().put("NumComments", Integer.toString(numCommentsTemp));
+//                }
+//            }
+//        });
+//
+//
+//        holder.message.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                //Go to Chat
+//            }
+//        });
 
         Glide.with(context).load(ParseUser.getCurrentUser().getParseFile("image").getUrl()).into(holder.ivProfileImage);
         Glide.with(context).load(Post.getImage().getUrl()).into(holder.postPic);
@@ -65,6 +102,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         public TextView tvUsername;
         public TextView tvDiscription;
         public ImageView postPic;
+        private ImageView likes;
+        private ImageView comments;
+        private ImageView message;
+        private TextView numbLike;
+        private ImageView savePost;
 
 
         public ViewHolder(View itemView) {
@@ -74,6 +116,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             tvUsername = (TextView) itemView.findViewById(R.id.t_username);
             tvDiscription = (TextView) itemView.findViewById(R.id.t_body);
             postPic = (ImageView) itemView.findViewById(R.id.t_postImage);
+            likes = (ImageView) itemView.findViewById(R.id.t_likes);
+            comments = (ImageView) itemView.findViewById(R.id.t_comment);
+            message = (ImageView) itemView.findViewById(R.id.t_message);
+            savePost = (ImageView) itemView.findViewById(R.id.t_fav);
+            numbLike = (TextView) itemView.findViewById(R.id.t_numLikes);
             itemView.setOnClickListener(this);
         }
 
@@ -81,19 +128,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         public void onClick(View v) {
             int position = getAdapterPosition();
             if (position != RecyclerView.NO_POSITION) {
-
-                Post Post = mPost.get(position);
-
+//                Post Post = mPost.get(position);
 //                Intent intent = new Intent(context, DetailsActivity.class);
-//
-//                intent.putExtra(Post.class.getSimpleName(), Parcels.wrap(Post));
+//             //   intent.putExtra(Post.class.getSimpleName(), Parcels.wrap(Post));
 //
 //                context.startActivity(intent);
             }
         }
     }
-
-
 
     // Clean all elements of the recycler
     public void clear() {
