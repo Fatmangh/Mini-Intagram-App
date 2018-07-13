@@ -3,11 +3,13 @@
 
     <item
         android:id="@+id/ic_house"
+        android:iconTint="@color/black"
         android:icon="@drawable/ic_house"
         android:title=""></item>
 
     <item
         android:id="@+id/ic_search"
+        android:iconTint="@color/black"
         android:icon="@drawable/ic_search"
         android:title="">
 
@@ -15,6 +17,7 @@
 
     <item
         android:id="@+id/ic_add"
+        android:iconTint="@color/black"
         android:icon="@drawable/ic_add"
         android:title="">
 
@@ -22,12 +25,15 @@
 
     <item
         android:id="@+id/ic_like"
+        android:iconTint="@color/black"
         android:icon="@drawable/ic_like"
         android:title="">
+
 
     </item>
     <item
         android:id="@+id/ic_profile"
+        android:iconTint="@color/black"
         android:icon="@drawable/ic_profile"
         android:title="">
 

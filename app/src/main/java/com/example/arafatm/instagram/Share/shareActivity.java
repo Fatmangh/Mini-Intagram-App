@@ -31,7 +31,9 @@ import com.parse.SaveCallback;
 
 import org.parceler.Parcels;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class shareActivity extends AppCompatActivity {
@@ -93,6 +95,8 @@ public class shareActivity extends AppCompatActivity {
                 // wrap File object into a content provider
                 // required for API >= 24
                 // See https://guides.codepath.com/android/Sharing-Content-with-Intents#sharing-files-with-api-24-or-higher
+
+
                 Uri fileProvider = FileProvider.getUriForFile(shareActivity.this, "com.codepath.fileprovider", photoFile);
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
 
@@ -112,14 +116,19 @@ public class shareActivity extends AppCompatActivity {
                 final String Description = description.getText().toString();
                 final ParseUser user = ParseUser.getCurrentUser();
 
-                //get image from camera and upload
-
                 final File file = new File(path);
                 final ParseFile parseFile = new ParseFile(file);
 
                 createPost(Description, parseFile, user);
             }
         });
+
+       //TODO
+        //Enable post deletion
+        //Enable likes, comment, save
+        //display saved and posted picture on profile page
+        //do details view
+        //Make it look good
 
     }
 
@@ -184,19 +193,18 @@ public class shareActivity extends AppCompatActivity {
         if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 // by this point we have the camera photo on disk
-                Bitmap takenImage = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
-                path = photoFile.getAbsolutePath();
-                // RESIZE BITMAP, see section below
+                Uri takenPhotoUri = Uri.fromFile(getPhotoFileUri(photoFileName));
+                // by this point we have the camera photo on disk
+                Bitmap rawTakenImage = BitmapFactory.decodeFile(takenPhotoUri.getPath());
                 // Load the taken image into a preview
                 ImageView ivPreview = (ImageView) findViewById(R.id.iv_image);
-                ivPreview.setImageBitmap(takenImage);
+                ivPreview.setImageBitmap(resizeImage(resizeImage(rawTakenImage)));
             }
 
             } else if (requestCode == CAPTURE_IMAGE_ACTIVITY) {
                 if (resultCode == RESULT_OK) {
                     if (data != null) {
                         Uri photoUri = data.getData();
-                        path = photoUri.getPath();
                         // Do something with the photo based on Uri
                         Bitmap selectedImage = null;
                         try {
@@ -206,11 +214,38 @@ public class shareActivity extends AppCompatActivity {
                         }
                         // Load the selected image into a preview
                         ImageView ivPreview = (ImageView) findViewById(R.id.iv_image);
-                        ivPreview.setImageBitmap(selectedImage);
+                        ivPreview.setImageBitmap(resizeImage(resizeImage(selectedImage)));
                     }
             } else { // Result was a failure
                 Toast.makeText(this, "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
             }
         }
     }
+
+    // RESIZE BITMAP, see section below
+    // by this point we have the camera photo on disk
+    private Bitmap resizeImage(Bitmap rawTakenImage) {
+        Bitmap resizedBitmap = BitmapScaler.scaleToFitWidth(rawTakenImage, 50);
+        // Configure byte output stream
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        // Compress the image further
+        resizedBitmap.compress(Bitmap.CompressFormat.JPEG, 40, bytes);
+        // Create a new file for the resized bitmap (`getPhotoFileUri` defined above)
+        Uri resizedUri = Uri.fromFile(getPhotoFileUri(photoFileName + "_resized"));
+        path = resizedUri.getPath();
+        File resizedFile = new File(resizedUri.getPath());
+        try {
+            resizedFile.createNewFile();
+            FileOutputStream fos = new FileOutputStream(resizedFile);
+            // Write the bytes of the bitmap to file
+            fos.write(bytes.toByteArray());
+            fos.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return rawTakenImage;
+    }
+
+
 }

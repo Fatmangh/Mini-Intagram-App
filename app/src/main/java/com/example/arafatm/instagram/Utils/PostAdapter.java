@@ -2,15 +2,20 @@ package com.example.arafatm.instagram.Utils;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.arafatm.instagram.Home.DetailsActivity;
+import com.example.arafatm.instagram.Home.commentDetailActivity;
 import com.example.arafatm.instagram.Model.Post;
+import com.example.arafatm.instagram.Profile.profileActivity;
 import com.example.arafatm.instagram.R;
 import com.parse.ParseUser;
 
@@ -20,6 +25,7 @@ import java.util.List;
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     private List<Post> mPost;
     private Context context;
+private boolean selected = false;
 
 
     //pass in the Posts array in the constructor
@@ -41,51 +47,61 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     //bind the values based on the position of the element
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         // get the data according to position
-        Post Post = mPost.get(position);
+        final Post Post = mPost.get(position);
         //populate the view according to this data
         holder.tvUsername.setText(ParseUser.getCurrentUser().getUsername());
         holder.tvDiscription.setText(Post.getDescription());
+        final String numLikes = Post.getString("Likes");
+        holder.numbLike.setText(numLikes);
+
+        holder.likes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // increment number of likes
+                if (selected == true){
+                    holder.likes.setImageResource(R.drawable.likes_unselected);
+                    selected = false;
+                    //TODO
+                    //update dataBase
+                } else {
+                    holder.likes.setImageResource(R.drawable.likes_selected);
+                    selected = true;
+                    //TODO
+                    //update dataBase
+                }
+
+                //TODO
+                //Update likes
+                Toast.makeText(context, "Picture liked!!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        holder.savePost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (selected == true){
+                    holder.savePost.setImageResource(R.drawable.save_unselected);
+                    selected = false;
+                } else {
+                    holder.savePost.setImageResource(R.drawable.save_selected);
+                    selected = true;
+                }
+                Toast.makeText(context, "Picture saved!!", Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
-        //GETTING LIKES AND COMMENTS TO WORK
-//        holder.numbLike.setText(ParseUser.getCurrentUser().getString("numLikes"));
-
-//        holder.numbLike.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                // increment number of likes
-//
-//                String numLikes = ParseUser.getCurrentUser().getString("numLikes");
-//                if (!numLikes.isEmpty()) {
-//                    int numLikesTemp = Integer.parseInt(numLikes) + 1;
-//                    ParseUser.getCurrentUser().put("numLikes", Integer.toString(numLikesTemp));
-//                }
-//            }
-//        });
-//        holder.comments.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                //Enable comments.
-//
-//                // increment number of comments
-//                String numComments = ParseUser.getCurrentUser().getString("NumComments");
-//                if (!numComments.isEmpty()) {
-//                    int numCommentsTemp = Integer.parseInt(numComments) + 1;
-//                    ParseUser.getCurrentUser().put("NumComments", Integer.toString(numCommentsTemp));
-//                }
-//            }
-//        });
-//
-//
-//        holder.message.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//                //Go to Chat
-//            }
-//        });
+        holder.comments.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, commentDetailActivity.class);
+                context.startActivity(intent);
+                //Enable comments.
+                Toast.makeText(context, "Picture commented!", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         Glide.with(context).load(ParseUser.getCurrentUser().getParseFile("image").getUrl()).into(holder.ivProfileImage);
         Glide.with(context).load(Post.getImage().getUrl()).into(holder.postPic);
@@ -97,7 +113,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     }
 
     //create ViewHolder class
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView ivProfileImage;
         public TextView tvUsername;
         public TextView tvDiscription;
@@ -107,6 +123,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         private ImageView message;
         private TextView numbLike;
         private ImageView savePost;
+        private TextView del;
 
 
         public ViewHolder(View itemView) {
@@ -121,21 +138,44 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             message = (ImageView) itemView.findViewById(R.id.t_message);
             savePost = (ImageView) itemView.findViewById(R.id.t_fav);
             numbLike = (TextView) itemView.findViewById(R.id.t_numLikes);
-            itemView.setOnClickListener(this);
+            del = (TextView) itemView.findViewById(R.id.t_delete);
+
+
+            postPic.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int position = getAdapterPosition();
+                    Post selectedPost = mPost.get(position);
+                    Intent intent = new Intent(context, DetailsActivity.class);
+                    intent.putExtra("caption", selectedPost.getDescription());
+                    intent.putExtra("time", selectedPost.getCreatedAt().getTime());
+                    intent.putExtra("image", selectedPost.getImage().getUrl());
+                    context.startActivity(intent);
+                }
+            });
+
+            tvUsername.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, profileActivity.class);
+                    context.startActivity(intent);
+                }
+            });
+
+            del.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int position = getAdapterPosition();
+                    mPost.remove(position);
+                    notifyDataSetChanged();
+                    //TODO
+                    //update dataBase
+                }
+            });
         }
 
-        @Override
-        public void onClick(View v) {
-            int position = getAdapterPosition();
-            if (position != RecyclerView.NO_POSITION) {
-//                Post Post = mPost.get(position);
-//                Intent intent = new Intent(context, DetailsActivity.class);
-//             //   intent.putExtra(Post.class.getSimpleName(), Parcels.wrap(Post));
-//
-//                context.startActivity(intent);
-            }
-        }
     }
+
 
     // Clean all elements of the recycler
     public void clear() {

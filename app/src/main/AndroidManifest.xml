@@ -22,14 +22,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Home.TimelineActivity">
+        <activity android:name=".Authentification.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Authentification.LoginActivity" />
+        <activity android:name=".Home.TimelineActivity" />
         <activity android:name=".Authentification.SignupActivity" />
         <activity android:name=".Search.searchActivity" />
         <activity android:name=".Profile.profileActivity" />
@@ -50,7 +50,8 @@
         <activity
             android:name=".Profile.settingsActivity"
             android:label="@string/title_activity_settings" />
-        <activity android:name=".Home.DetailsActivity"></activity>
+        <activity android:name=".Home.DetailsActivity" />
+        <activity android:name=".Home.commentDetailActivity"></activity>
     </application>
 
 </manifest>

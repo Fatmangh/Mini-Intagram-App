@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.arafatm.instagram.Home.TimelineActivity;
 import com.example.arafatm.instagram.R;
@@ -18,7 +19,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText userName;
     private EditText passWord;
     private Button loginButton;
-    private Button signupButton;
+    private TextView signupText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +29,7 @@ public class LoginActivity extends AppCompatActivity {
         userName = (EditText) findViewById(R.id.pt_userName);
         passWord = (EditText) findViewById(R.id.pt_password);
         loginButton = (Button) findViewById(R.id.bt_login);
-        signupButton = (Button) findViewById(R.id.bt_signup);
+        signupText = (TextView) findViewById(R.id.bt_signup);
 
 
         loginButton.setOnClickListener(new View.OnClickListener() {
@@ -41,7 +42,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        signupButton.setOnClickListener(new View.OnClickListener() {
+        signupText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 final Intent intent = new Intent(LoginActivity.this, SignupActivity.class);

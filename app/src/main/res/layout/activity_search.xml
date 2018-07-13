@@ -7,17 +7,36 @@
     android:background="@color/white"
     tools:context=".Search.searchActivity">
 
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <include layout="@layout/layout_buttom_navigation_view"/>
+        <include layout="@layout/layout_buttom_navigation_view" />
 
-        <SearchView
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="74dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true" />
+            android:background="#DCDCDC">
+
+            <SearchView
+                android:layout_width="293dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="0dp" />
+            <Button
+                android:id="@+id/button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:text="Search" />
+
+        </RelativeLayout>
+
 
     </RelativeLayout>
 

@@ -3,8 +3,6 @@ package com.example.arafatm.instagram.Home;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -51,7 +49,6 @@ public class TimelineActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
         setupBttomNavigationView();
-        setupViewPager();
 
         // Lookup the swipe container view
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
@@ -71,15 +68,12 @@ public class TimelineActivity extends AppCompatActivity {
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
 
-
         //checks if user is logged in or not
         ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser == null) {
            Intent intent = new Intent(context, LoginActivity.class);
            startActivity(intent);
         }
-
-
         //find the Recycle view
         rvPost = (RecyclerView) findViewById(R.id.rvPost);
         //init the arraylist (data source)
@@ -88,64 +82,10 @@ public class TimelineActivity extends AppCompatActivity {
         postAdapter = new PostAdapter(posts);
         //RecycleView Setup (Layout manager, use adapter
         rvPost.setLayoutManager(new LinearLayoutManager(this));
-
-
         //set the adapter
         rvPost.setAdapter(postAdapter);
         loadTopPosts();
-
-
-
-//////        descriptionInput = (EditText) findViewById(R.id.);
-//////        createButton = (Button) findViewById(R.id.);
-//////        refreshButton = (Button) findViewById(R.id.);
-////
-////        createButton.setOnClickListener(new View.OnClickListener() {
-////            @Override
-////            public void onClick(View view) {
-////                final String description = descriptionInput.getText().toString();
-////                final ParseUser user = ParseUser.getCurrentUser();
-////
-////                final File file = new File(imagePath);
-////                final ParseFile parseFile = new ParseFile(file);
-////
-////                createPost(description, parseFile, user);
-////            }
-//        });
-//        refreshButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                loadTopPosts();
-//            }
-//        });
-//        loadTopPosts();
     }
-
-
-
-    /*Adds the 3 tabs */
-    private void setupViewPager() {
-        SessionsPageAdaptor adapter = new SessionsPageAdaptor(getSupportFragmentManager());
-        adapter.addFragment(new fragment_message());
-      //  adapter.addFragment(new fragment_camera());
-        ViewPager viewPager = (ViewPager) findViewById(R.id.container);
-        viewPager.setAdapter(adapter);
-
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(viewPager);
-
-      //  tabLayout.getTabAt(1).setIcon(R.drawable.ic_camera);
-        tabLayout.getTabAt(0).setIcon(R.drawable.ic_arraow);
-    }
-
-//        refreshButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                loadTopPosts();
-//            }
-//        });
-//        loadTopPosts()
-//    }
 
 
     private void loadTopPosts() {

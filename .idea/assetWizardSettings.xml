@@ -34,10 +34,10 @@
                                   <option name="values">
                                     <map>
                                       <entry key="assetType" value="IMAGE" />
-                                      <entry key="imageAsset" value="$USER_HOME$/Downloads/icons8-customer-24.png" />
-                                      <entry key="outputName" value="ic_profile" />
+                                      <entry key="imageAsset" value="$USER_HOME$/Downloads/icons8-shutdown-24.png" />
+                                      <entry key="outputName" value="ic_logout" />
                                       <entry key="theme" value="CUSTOM" />
-                                      <entry key="themeColor" value="000000" />
+                                      <entry key="themeColor" value="010506" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -48,7 +48,22 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="foregroundImage" value="$PROJECT_DIR$/../instagram_android_assets/icon.png" />
+                                      <entry key="backgroundLayerName" value="ic_launcher_background" />
+                                      <entry key="foregroundImage" value="$PROJECT_DIR$/../instagram_android_assets/drawable-xxhdpi/nav_logo_whiteout.png" />
+                                      <entry key="foregroundLayerName" value="ic_launcher_foreground" />
+                                      <entry key="outputName" value="logo" />
+                                    </map>
+                                  </option>
+                                </PersistentState>
+                              </value>
+                            </entry>
+                            <entry key="launcherLegacy">
+                              <value>
+                                <PersistentState>
+                                  <option name="values">
+                                    <map>
+                                      <entry key="imageAsset" value="$PROJECT_DIR$/../instagram_android_assets/drawable-xxhdpi/nav_logo_whiteout.png" />
+                                      <entry key="outputName" value="logo" />
                                     </map>
                                   </option>
                                 </PersistentState>
