@@ -3,6 +3,8 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#ff1d6000</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="meNa">#0f3443</color>
+
 
     <color name="action_bar_semi_transparent_white">#bfffffff</color>
     <color name="action_bar_transparent_background">#20000000</color>

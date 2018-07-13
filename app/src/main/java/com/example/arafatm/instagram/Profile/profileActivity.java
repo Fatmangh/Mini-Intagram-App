@@ -29,9 +29,8 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
 
-import java.io.File;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -168,7 +167,7 @@ public class profileActivity extends AppCompatActivity {
                                 Intent intent = new Intent(context, DetailsActivity.class);
                                 Post selectedPost = objects.get(position);
                                 intent.putExtra("caption", selectedPost.getDescription());
-                                intent.putExtra("time", selectedPost.getCreatedAt().getTime());
+                                intent.putExtra("time", selectedPost.getCreatedAt().toString());
                                 intent.putExtra("image", selectedPost.getImage().getUrl());
                                 context.startActivity(intent);
                                 Toast.makeText(profileActivity.this, "" + position,
@@ -198,27 +197,14 @@ public class profileActivity extends AppCompatActivity {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    String path = photoUri.getPath();
-                    final File file = new File(path);
-                    final ParseFile parseFile = new ParseFile(file);
-                    parseFile.saveInBackground(new SaveCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            if (e == null) {
-                                Log.d(TAG, "Image uploaded successfully.");
-                                ParseUser.getCurrentUser().put("image", parseFile);
 
-                                ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
-                                    @Override
-                                    public void done(ParseException e) {
-                                        Toast.makeText(context, "Picture UPLOADED!!", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                            } else {
-                                e.printStackTrace();
-                            }
-                        }
-                    });
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    selectedImage.compress(Bitmap.CompressFormat.PNG, 0, stream);
+                    byte[] Data = stream.toByteArray();
+                    ParseFile imageFile = new ParseFile("mynew.png", Data);
+                    ParseUser.getCurrentUser().put("image", imageFile);
+                    imageFile.saveInBackground();
+
 
                     // Load the selected image into a preview
                     ImageView ivPreview = (ImageView) findViewById(R.id.profile_image);

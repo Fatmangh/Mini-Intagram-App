@@ -20,6 +20,7 @@ import com.example.arafatm.instagram.R;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
 
+import java.util.Collections;
 import java.util.List;
 
 
@@ -138,7 +139,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         private ImageView savePost;
         private ImageView del;
 
-
         public ViewHolder(View itemView) {
             super(itemView);
             //perform findViewById lookups
@@ -196,6 +196,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     // Add a list of items -- change to type used
     public void addAll(List<Post> list) {
         mPost.addAll(list);
+        Collections.reverse(mPost);
         notifyDataSetChanged();
     }
 }

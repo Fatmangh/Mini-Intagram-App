@@ -71,8 +71,8 @@ public class TimelineActivity extends AppCompatActivity {
         //checks if user is logged in or not
         ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser == null) {
-            Intent intent = new Intent(context, LoginActivity.class);
-            startActivity(intent);
+           Intent intent = new Intent(context, LoginActivity.class);
+           startActivity(intent);
         }
         //find the Recycle view
         rvPost = (RecyclerView) findViewById(R.id.rvPost);
@@ -90,7 +90,7 @@ public class TimelineActivity extends AppCompatActivity {
 
     private void loadTopPosts() {
         final Post.Query postQuery = new Post.Query();
-        postQuery.getTop().withUser().getPostsForUser(ParseUser.getCurrentUser()).getTop();
+        postQuery.getTop().withUser().getPostsForUser(ParseUser.getCurrentUser());
         postQuery.findInBackground(new FindCallback<Post>() {
             @Override
             public void done(List<Post> objects, ParseException e) {
@@ -124,41 +124,44 @@ public class TimelineActivity extends AppCompatActivity {
 
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == CODE) {
-            if (resultCode == RESULT_OK) {
-                // by this point we have the camera photo on disk
-                Post post = (Post) Parcels.unwrap(data.getParcelableExtra("post"));
-                posts.add(0, post);
-                postAdapter.notifyItemChanged(0);
-                rvPost.scrollToPosition(0);
-            }
-        } else { // Result was a failure
-            Toast.makeText(this, "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
-        }
-    }
+        public void onActivityResult(int requestCode, int resultCode, Intent data) {
+            if (requestCode == CODE) {
+                if (resultCode == RESULT_OK) {
+                    // by this point we have the camera photo on disk
+                    Post post = (Post) Parcels.unwrap(data.getParcelableExtra("post"));
 
-    public void fetchTimelineAsync(int page) {
-        // Send the network request to fetch the updated data
-        // `client` here is an instance of Android Async HTTP
-        // getHomeTimeline is an example endpoint.
-        final Post.Query postQuery = new Post.Query();
-        postQuery.getTop().withUser().getPostsForUser(ParseUser.getCurrentUser()).getTop();
-        postQuery.findInBackground(new FindCallback<Post>() {
-            @Override
-            public void done(List<Post> objects, ParseException e) {
-                if (e == null) {
-                    // Remember to CLEAR OUT old items before appending in the new ones
-                    postAdapter.clear();
-                    // ...the data has come back, add new items to your adapter...
-                    postAdapter.addAll(objects);
-                    // Now we call setRefreshing(false) to signal refresh has finished
-                    swipeContainer.setRefreshing(false);
-                } else {
-                    e.printStackTrace();
-                    Log.d("DEBUG", "Fetch timeline error: " + e.toString());
+                    posts.add(0, post);
+
+                    postAdapter.notifyItemChanged(0);
+                    rvPost.scrollToPosition(0);
                 }
-            }
-        });
-    }
+
+            } else  { // Result was a failure
+                    Toast.makeText(this, "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
+                }
+        }
+
+        public void fetchTimelineAsync(int page) {
+            // Send the network request to fetch the updated data
+            // `client` here is an instance of Android Async HTTP
+            // getHomeTimeline is an example endpoint.
+            final Post.Query postQuery = new Post.Query();
+            postQuery.getTop().withUser().getPostsForUser(ParseUser.getCurrentUser()).getTop();
+            postQuery.findInBackground(new FindCallback<Post>() {
+                @Override
+                public void done(List<Post> objects, ParseException e) {
+                    if (e == null) {
+                        // Remember to CLEAR OUT old items before appending in the new ones
+                        postAdapter.clear();
+                        // ...the data has come back, add new items to your adapter...
+                        postAdapter.addAll(objects);
+                        // Now we call setRefreshing(false) to signal refresh has finished
+                        swipeContainer.setRefreshing(false);
+                    } else {
+                        e.printStackTrace();
+                        Log.d("DEBUG", "Fetch timeline error: " + e.toString());
+                    }
+                }
+            });
+        }
 }

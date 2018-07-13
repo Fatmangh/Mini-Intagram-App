@@ -52,7 +52,7 @@ public class SignupActivity extends AppCompatActivity {
                     Toast.makeText(SignupActivity.this, R.string.all_fields_required, Toast.LENGTH_SHORT).show();
                 } else {
                     //check for inout validity
-                    if (!(password != password_rep)) {
+                    if ((password != password_rep)) {
                         Toast.makeText(SignupActivity.this, R.string.error_mismatch_password, Toast.LENGTH_SHORT).show();
                     } else {
                         //registers the user
