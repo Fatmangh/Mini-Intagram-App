@@ -30,14 +30,12 @@ public class SignupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
-
         Name = (EditText) findViewById(R.id.pt_name);
         userName = (EditText) findViewById(R.id.pt_userName);
         passWord = (EditText) findViewById(R.id.pt_password);
         repPassWord = (EditText) findViewById(R.id.pt_password_rep);
         email = (EditText) findViewById(R.id.pt_email);
         signupButton = (Button) findViewById(R.id.bt_signup1);
-
 
         signupButton.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("WrongConstant")
@@ -82,7 +80,6 @@ public class SignupActivity extends AppCompatActivity {
                     Log.e("SignupActivity", "Register succcessful");
                     final Intent intent = new Intent(SignupActivity.this, TimelineActivity.class);
                     startActivity(intent);
-                    finish();
                 } else {
                     Log.e("SignupActivity", "Register failed");
                     e.printStackTrace();

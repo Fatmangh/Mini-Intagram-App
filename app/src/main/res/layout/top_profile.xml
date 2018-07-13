@@ -109,7 +109,7 @@
             android:background="@drawable/gray_border"
 
             android:clickable="true"
-            android:text="Edit Profile"
+            android:text="Edit Settings"
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="14sp"

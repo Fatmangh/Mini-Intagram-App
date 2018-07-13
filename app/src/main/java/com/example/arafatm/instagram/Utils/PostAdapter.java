@@ -17,6 +17,7 @@ import com.example.arafatm.instagram.Home.commentDetailActivity;
 import com.example.arafatm.instagram.Model.Post;
 import com.example.arafatm.instagram.Profile.profileActivity;
 import com.example.arafatm.instagram.R;
+import com.parse.ParseFile;
 import com.parse.ParseUser;
 
 import java.util.List;
@@ -25,7 +26,7 @@ import java.util.List;
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     private List<Post> mPost;
     private Context context;
-private boolean selected = false;
+    private boolean selected = false;
 
 
     //pass in the Posts array in the constructor
@@ -47,20 +48,26 @@ private boolean selected = false;
 
     //bind the values based on the position of the element
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final PostAdapter.ViewHolder holder, int position) {
         // get the data according to position
-        final Post Post = mPost.get(position);
+        final Post post = mPost.get(position);
+
+        // null placeholders if the PagedList is configured to use them
+        // only works for data sets that have total count provided (i.e. PositionalDataSource)
+        if (post == null) {
+            return;
+        }
         //populate the view according to this data
         holder.tvUsername.setText(ParseUser.getCurrentUser().getUsername());
-        holder.tvDiscription.setText(Post.getDescription());
-        final String numLikes = Post.getString("Likes");
+        holder.tvDiscription.setText(post.getDescription());
+        final String numLikes = post.getString("Likes");
         holder.numbLike.setText(numLikes);
 
         holder.likes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // increment number of likes
-                if (selected == true){
+                if (selected == true) {
                     holder.likes.setImageResource(R.drawable.likes_unselected);
                     selected = false;
                     //TODO
@@ -81,7 +88,7 @@ private boolean selected = false;
         holder.savePost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (selected == true){
+                if (selected == true) {
                     holder.savePost.setImageResource(R.drawable.save_unselected);
                     selected = false;
                 } else {
@@ -103,8 +110,14 @@ private boolean selected = false;
             }
         });
 
-        Glide.with(context).load(ParseUser.getCurrentUser().getParseFile("image").getUrl()).into(holder.ivProfileImage);
-        Glide.with(context).load(Post.getImage().getUrl()).into(holder.postPic);
+        ParseFile file = ParseUser.getCurrentUser().getParseFile("image");
+        if (file != null) {
+            Glide.with(context)
+                    .load(file.getUrl())
+                    .into(holder.ivProfileImage);
+        }
+
+        Glide.with(context).load(post.getImage().getUrl()).into(holder.postPic);
     }
 
     @Override
@@ -123,7 +136,7 @@ private boolean selected = false;
         private ImageView message;
         private TextView numbLike;
         private ImageView savePost;
-        private TextView del;
+        private ImageView del;
 
 
         public ViewHolder(View itemView) {
@@ -138,8 +151,7 @@ private boolean selected = false;
             message = (ImageView) itemView.findViewById(R.id.t_message);
             savePost = (ImageView) itemView.findViewById(R.id.t_fav);
             numbLike = (TextView) itemView.findViewById(R.id.t_numLikes);
-            del = (TextView) itemView.findViewById(R.id.t_delete);
-
+            del = (ImageView) itemView.findViewById(R.id.t_delete);
 
             postPic.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -148,7 +160,7 @@ private boolean selected = false;
                     Post selectedPost = mPost.get(position);
                     Intent intent = new Intent(context, DetailsActivity.class);
                     intent.putExtra("caption", selectedPost.getDescription());
-                    intent.putExtra("time", selectedPost.getCreatedAt().getTime());
+                    intent.putExtra("time", selectedPost.getCreatedAt().toString());
                     intent.putExtra("image", selectedPost.getImage().getUrl());
                     context.startActivity(intent);
                 }
@@ -166,16 +178,14 @@ private boolean selected = false;
                 @Override
                 public void onClick(View view) {
                     int position = getAdapterPosition();
+                    Post toBeRemoved = mPost.get(position);
                     mPost.remove(position);
                     notifyDataSetChanged();
-                    //TODO
-                    //update dataBase
+                    toBeRemoved.deleteInBackground();
                 }
             });
         }
-
     }
-
 
     // Clean all elements of the recycler
     public void clear() {

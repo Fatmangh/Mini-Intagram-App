@@ -55,10 +55,6 @@ public class BottomNavigationViewHelper {
         });
     }
 
-    private static void goToSettingsPage(Context context) {
-
-    }
-
     private static void goToLikesPage(Context context) {
         Intent intent = new Intent(context, followActivity.class);
         context.startActivity(intent);
@@ -69,17 +65,17 @@ public class BottomNavigationViewHelper {
         context.startActivity(intent);
     }
 
-    private static void goToSharePage( Context context) {
+    private static void goToSharePage(Context context) {
         Intent intent = new Intent(context, shareActivity.class);
         context.startActivity(intent);
     }
 
-    private static void goToSearchPage( Context context) {
+    private static void goToSearchPage(Context context) {
         Intent intent = new Intent(context, searchActivity.class);
         context.startActivity(intent);
     }
 
-    private static void goToProfilePage( Context context) {
+    private static void goToProfilePage(Context context) {
         Intent intent = new Intent(context, profileActivity.class);
         context.startActivity(intent);
     }

@@ -115,14 +115,12 @@
         android:text="Likes"
         android:textColor="@color/black" />
 
-    <TextView
+    <ImageView
         android:id="@+id/t_delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/t_fav"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="15dp"
-        android:text="Delete"
-        android:textColor="@color/black" />
+        android:layout_alignEnd="@+id/t_postImage"
+        android:layout_alignTop="@+id/t_image"
+        app:srcCompat="@drawable/ic_delete" />
 
 </RelativeLayout>

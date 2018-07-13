@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.arafatm.instagram.Home.TimelineActivity;
@@ -39,9 +40,10 @@ import java.io.IOException;
 public class shareActivity extends AppCompatActivity {
     private static final String TAG = "shareActivity";
     private static final int REQUEST_CODE = 5;
-    public final String APP_TAG = "Instagram";
+
     public final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034;
     public final static int CAPTURE_IMAGE_ACTIVITY = 104;
+    public final String APP_TAG = "Instagram";
     public String photoFileName = "photo.jpg";
     private static final int ACTIVITY_NUM = 2;
     private Context context = shareActivity.this;
@@ -51,8 +53,7 @@ public class shareActivity extends AppCompatActivity {
     private Button cameraButton;
     private ImageView image;
     private String path = "";
-
-    File photoFile;
+    private File photoFile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +74,6 @@ public class shareActivity extends AppCompatActivity {
                 // Create intent for picking a photo from the gallery
                 Intent intent = new Intent(Intent.ACTION_PICK,
                         MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-
                 // If you call startActivityForResult() using an intent that no app can handle, your app will crash.
                 // So as long as the result is not null, it's safe to use the intent.
                 if (intent.resolveActivity(getPackageManager()) != null) {
@@ -91,15 +91,11 @@ public class shareActivity extends AppCompatActivity {
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 // Create a File reference to access to future access
                 photoFile = getPhotoFileUri(photoFileName);
-
                 // wrap File object into a content provider
                 // required for API >= 24
                 // See https://guides.codepath.com/android/Sharing-Content-with-Intents#sharing-files-with-api-24-or-higher
-
-
                 Uri fileProvider = FileProvider.getUriForFile(shareActivity.this, "com.codepath.fileprovider", photoFile);
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
-
                 // If you call startActivityForResult() using an intent that no app can handle, your app will crash.
                 // So as long as the result is not null, it's safe to use the intent.
                 if (intent.resolveActivity(getPackageManager()) != null) {
@@ -115,21 +111,11 @@ public class shareActivity extends AppCompatActivity {
             public void onClick(View view) {
                 final String Description = description.getText().toString();
                 final ParseUser user = ParseUser.getCurrentUser();
-
                 final File file = new File(path);
                 final ParseFile parseFile = new ParseFile(file);
-
                 createPost(Description, parseFile, user);
             }
         });
-
-       //TODO
-        //Enable post deletion
-        //Enable likes, comment, save
-        //display saved and posted picture on profile page
-        //do details view
-        //Make it look good
-
     }
 
     // Returns the File for a photo stored on disk given the fileName
@@ -146,7 +132,6 @@ public class shareActivity extends AppCompatActivity {
 
         // Return the file target for the photo based on filename
         File file = new File(mediaStorageDir.getPath() + File.separator + fileName);
-
         return file;
     }
 
@@ -170,11 +155,18 @@ public class shareActivity extends AppCompatActivity {
         newPost.setImage(imageFile);
         newPost.setUser(user);
 
+        // on some click or some loading we need to wait for...
+        final ProgressBar pb = (ProgressBar) findViewById(R.id.pbLoading);
+        pb.setVisibility(ProgressBar.VISIBLE);
+
         newPost.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
                 if (e == null) {
                     Log.d("ShareView", "post successfully created");
+                    // run a background job and once complete
+                    pb.setVisibility(ProgressBar.INVISIBLE);
+
                     Intent intent = new Intent(context, TimelineActivity.class);
                     intent.putExtra("post", Parcels.wrap(newPost));
                     setResult(REQUEST_CODE, intent);
@@ -200,22 +192,21 @@ public class shareActivity extends AppCompatActivity {
                 ImageView ivPreview = (ImageView) findViewById(R.id.iv_image);
                 ivPreview.setImageBitmap(resizeImage(resizeImage(rawTakenImage)));
             }
-
-            } else if (requestCode == CAPTURE_IMAGE_ACTIVITY) {
-                if (resultCode == RESULT_OK) {
-                    if (data != null) {
-                        Uri photoUri = data.getData();
-                        // Do something with the photo based on Uri
-                        Bitmap selectedImage = null;
-                        try {
-                            selectedImage = MediaStore.Images.Media.getBitmap(this.getContentResolver(), photoUri);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        // Load the selected image into a preview
-                        ImageView ivPreview = (ImageView) findViewById(R.id.iv_image);
-                        ivPreview.setImageBitmap(resizeImage(resizeImage(selectedImage)));
+        } else if (requestCode == CAPTURE_IMAGE_ACTIVITY) {
+            if (resultCode == RESULT_OK) {
+                if (data != null) {
+                    Uri photoUri = data.getData();
+                    // Do something with the photo based on Uri
+                    Bitmap selectedImage = null;
+                    try {
+                        selectedImage = MediaStore.Images.Media.getBitmap(this.getContentResolver(), photoUri);
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
+                    // Load the selected image into a preview
+                    ImageView ivPreview = (ImageView) findViewById(R.id.iv_image);
+                    ivPreview.setImageBitmap(resizeImage(resizeImage(selectedImage)));
+                }
             } else { // Result was a failure
                 Toast.makeText(this, "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
             }
@@ -246,6 +237,4 @@ public class shareActivity extends AppCompatActivity {
         }
         return rawTakenImage;
     }
-
-
 }

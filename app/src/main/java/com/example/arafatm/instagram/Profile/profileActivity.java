@@ -27,8 +27,11 @@ import com.example.arafatm.instagram.Utils.ImageAdapter;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,10 +61,8 @@ public class profileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         setupBttomNavigationView();
+
         images = new ArrayList<>();
-
-
-
         posts = (TextView) findViewById(R.id.tvPosts);
         followers = (TextView) findViewById(R.id.tvFollowers);
         following = (TextView) findViewById(R.id.tvFollow);
@@ -74,7 +75,7 @@ public class profileActivity extends AppCompatActivity {
         ParseUser.getCurrentUser().fetchInBackground();
         //checks if user is logged in or not
         ParseUser currentUser = ParseUser.getCurrentUser();
-        
+
         posts.setText(currentUser.getString("NumPosts"));
         String str = currentUser.getString("followers");
         followers.setText(str);
@@ -88,7 +89,6 @@ public class profileActivity extends AppCompatActivity {
                 // Create intent for picking a photo from the gallery
                 Intent intent = new Intent(Intent.ACTION_PICK,
                         MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-
                 // If you call startActivityForResult() using an intent that no app can handle, your app will crash.
                 // So as long as the result is not null, it's safe to use the intent.
                 if (intent.resolveActivity(getPackageManager()) != null) {
@@ -105,11 +105,15 @@ public class profileActivity extends AppCompatActivity {
                         Toast.LENGTH_SHORT).show();
                 ParseUser.logOut();
                 Intent intent = new Intent(context, LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 context.startActivity(intent);
             }
         });
 
-        Glide.with(context).load(ParseUser.getCurrentUser().getParseFile("image").getUrl()).into(image);
+        ParseFile file = ParseUser.getCurrentUser().getParseFile("image");
+        if (file != null) {
+            Glide.with(context).load(file.getUrl()).into(image);
+        }
 
         settings.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -158,8 +162,6 @@ public class profileActivity extends AppCompatActivity {
                         imageAdapter = new ImageAdapter(context, images);
                         final GridView gridview = (GridView) findViewById(R.id.gridView);
                         gridview.setAdapter(imageAdapter);
-
-
                         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             public void onItemClick(AdapterView<?> parent, View v,
                                                     int position, long id) {
@@ -171,7 +173,6 @@ public class profileActivity extends AppCompatActivity {
                                 context.startActivity(intent);
                                 Toast.makeText(profileActivity.this, "" + position,
                                         Toast.LENGTH_SHORT).show();
-
                             }
                         });
                     } catch (IOException e1) {
@@ -197,6 +198,28 @@ public class profileActivity extends AppCompatActivity {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+                    String path = photoUri.getPath();
+                    final File file = new File(path);
+                    final ParseFile parseFile = new ParseFile(file);
+                    parseFile.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e == null) {
+                                Log.d(TAG, "Image uploaded successfully.");
+                                ParseUser.getCurrentUser().put("image", parseFile);
+
+                                ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
+                                    @Override
+                                    public void done(ParseException e) {
+                                        Toast.makeText(context, "Picture UPLOADED!!", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            } else {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+
                     // Load the selected image into a preview
                     ImageView ivPreview = (ImageView) findViewById(R.id.profile_image);
                     ivPreview.setImageBitmap(selectedImage);
@@ -206,5 +229,4 @@ public class profileActivity extends AppCompatActivity {
             }
         }
     }
-
 }
